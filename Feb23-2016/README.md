@@ -27,6 +27,7 @@ Here are some tasks we'd like to accomplish before we are done:
 
 - [ ] Support for sparse matrices in the `MarkovChain` type (ref [issue 97](https://github.com/QuantEcon/QuantEcon.jl/issues/97))
 - [ ] Decide if we want to keep the `eigen` and `lu` options for `mc_compute_stationary`. It doesn't hurt to have them, but I believe they are strictly inferior to the `gth` method (ref [issue 75](https://github.com/QuantEcon/QuantEcon.jl/issues/75)). We should do accuracy and performance tests to verify that `gth` is better for matrices of all datatypes and sizes.
+- [ ] Speed up the `MarkovChain` constructor. I think this will amount to devectorizing [this line](https://github.com/QuantEcon/QuantEcon.jl/blob/3001af73a1402e39b12cf9f6e80b66304805a116/src/mc_tools.jl#L63) into the proper loop.
 - [ ] Decide if we should add a second field to the `MarkovChain` that holds the values of the states. This would default to the abstract vector `1:size(P, 1)`, where `P` is the stochastic matrix. I've [started this discussion before](https://github.com/QuantEcon/QuantEcon.jl/pull/20/files#r20576723), but I'd like to revisit is as I often wish I could have it.
 - [ ] If the above point gets resolved in the affirmative, decide if we should have `tauchen` and `rouwenhorst` return instances of `MarkovChain` instead of the `(y, Π)` tuples.
 - [ ] Move `mc_tools.jl` and `markov_approx.jl` to the `markov` folder  (ref [issue 84](https://github.com/QuantEcon/QuantEcon.jl/issues/84))
@@ -37,3 +38,4 @@ Here are some tasks we'd like to accomplish before we are done:
 - [ ] Implement `Base.show(io::IO, ddp::DiscreteDP)`
 - [ ] Implement `QuantEcon.simulate(ddpr::DPSolveResult)` that just forwards to the `simulate(ddpr.mc)`. We could talk about simulating v and sigma also...
 - [ ] Transpose the ddp code so that memory layout is optimal for column-major storage. This is potentially a rather big step. However, if we have done a good enough job on the preceding steps, we should have good enough tests in place to do this with confidence.
+- [ ] (Optional) Write some performance benchmarks for `MarkovChain` methods, `tauchen` and `rouwenshort`, and the ddp routines. It would be awesome if someone wants to tackle this from the very beginning so we can do a before/after comparison from the day's sprint and measure our progress on this dimension.
